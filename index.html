@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRYSTY PLAYZ | Luxury Creator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Base & Variables */
+        :root {
+            --bg-main: #FAFAFA;
+            --text-dark: #1A1A1A;
+            --accent: #FF4D4D;
+            --accent-soft: rgba(255, 77, 77, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow-subtle: 0 20px 40px rgba(0, 0, 0, 0.04);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        /* Animated Gradient Background */
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text-dark); 
+            overflow-x: hidden;
+            background: linear-gradient(-45deg, #FAFAFA, #ffffff, #fff0f0, #FAFAFA);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.95); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* Loader & Enter Screen (CSS Updates Only) */
+        #loader {
+            position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); z-index: 9999;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        .loader-title { 
+            font-weight: 800; font-size: 2rem; letter-spacing: -1px; margin-bottom: 20px; 
+            transition: all 0.5s ease;
+        }
+        .progress-container { width: 200px; height: 4px; background: #f0f0f0; border-radius: 4px; overflow: hidden; transition: opacity 0.5s ease; }
+        .progress-bar { height: 100%; width: 0%; background: var(--accent); transition: width 2.5s cubic-bezier(0.8, 0, 0.2, 1); }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; color: var(--accent); }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .loader-title.ready-to-enter {
+            animation: pulseText 2s infinite;
+            font-size: 2.5rem;
+            cursor: pointer;
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: fixed; color: var(--accent); opacity: 0.3;
+            pointer-events: none; z-index: 0;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) scale(1.5) rotate(90deg); opacity: 0; }
+        }
+
+        /* Glass Navbar */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border); z-index: 1000; transition: padding 0.3s ease;
+        }
+        .logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent); color: white; padding: 14px 28px;
+            border-radius: 100px; text-decoration: none; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 10px 20px var(--accent-soft); transition: transform 0.3s, box-shadow 0.3s;
+            border: none; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .btn-primary::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; 
+            background: rgba(255,255,255,0.2); transform: rotate(45deg) translateY(100%); transition: transform 0.6s ease;
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 30px rgba(255, 77, 77, 0.3); }
+        .btn-primary:hover::after { transform: rotate(45deg) translateY(-100%); }
+
+        /* Floating Music Player */
+        .music-player {
+            position: fixed; bottom: 30px; left: 30px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 50px;
+            padding: 12px 25px; display: flex; align-items: center; gap: 20px;
+            box-shadow: var(--shadow-subtle); transition: transform 0.3s;
+        }
+        .music-player:hover { transform: translateY(-3px); }
+        .play-btn { background: none; border: none; color: var(--accent); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .play-btn:hover { transform: scale(1.1); }
+        .volume-control { display: flex; align-items: center; gap: 10px; color: #555; }
+        .volume-control input[type="range"] { width: 70px; accent-color: var(--accent); cursor: pointer; height: 4px; }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 10%; position: relative; z-index: 1;
+        }
+        .hero-content { max-width: 600px; }
+        .tagline { color: var(--accent); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block; }
+        .hero h1 { font-size: 5.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; color: #666; margin-bottom: 40px; line-height: 1.6; }
+        
+        @keyframes heroFloat {
+            0% { transform: translateY(0px); box-shadow: 0 20px 40px rgba(0,0,0,0.04); }
+            50% { transform: translateY(-15px); box-shadow: 0 30px 50px rgba(0,0,0,0.08); }
+            100% { transform: translateY(0px); box-shadow: 0 20px 40px rgba(0,0,0,0.04); }
+        }
+        
+        /* Updated Hero Image wrapper for direct image embedding */
+        .hero-image {
+            width: 450px; height: 600px;
+            border-radius: 30px; border: 4px solid white; 
+            overflow: hidden; /* Rounds the inner image edges */
+            background: #f5f5f5;
+            animation: heroFloat 6s ease-in-out infinite;
+        }
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Behave exactly like background cover */
+            display: block;
+        }
+
+        /* Sections Layout */
+        section { padding: 120px 10%; position: relative; z-index: 1; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
+
+        /* About Section Styles */
+        .about-card {
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid white; border-radius: 30px; padding: 50px; box-shadow: var(--shadow-subtle);
+            max-width: 800px; margin: 0 auto; text-align: center;
+        }
+        .about-card p { font-size: 1.2rem; line-height: 1.8; color: #444; }
+        .about-card strong { color: var(--accent); }
+
+        /* Profile */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border: 1px solid white; border-radius: 30px; padding: 50px; box-shadow: var(--shadow-subtle); max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; transition: transform 0.3s;
+        }
+        .profile-card:hover { transform: translateY(-5px); }
+        .stat-box { background: rgba(255,255,255,0.5); padding: 20px; border-radius: 20px; text-align: center; transition: background 0.3s; }
+        .stat-box:hover { background: rgba(255,255,255,0.9); }
+        .stat-box h4 { color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .stat-box p { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+
+        /* Booking Form */
+        .booking-container { max-width: 600px; margin: 0 auto; background: white; padding: 50px; border-radius: 30px; box-shadow: var(--shadow-subtle); border: 1px solid #f0f0f0; transition: transform 0.3s; }
+        .booking-container:hover { transform: translateY(-5px); }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; color: #555; }
+        .form-control { width: 100%; padding: 16px 20px; border-radius: 15px; border: 1px solid #e5e5e5; background: #fafafa; font-family: 'Inter', sans-serif; font-size: 1rem; transition: all 0.3s; }
+        .form-control:focus { outline: none; border-color: var(--accent); background: white; box-shadow: 0 0 0 4px var(--accent-soft); }
+
+        /* Premium Social Footer */
+        footer { background: #111; color: white; padding: 80px 10% 30px; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 50px; }
+        .footer-logo { font-size: 2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+        .footer-desc { color: #888; font-size: 1rem; margin-bottom: 40px; max-width: 400px; }
+        
+        .social-links { display: flex; gap: 25px; flex-wrap: wrap; justify-content: center; }
+        .social-links a { color: #ccc; text-decoration: none; font-size: 1.1rem; font-weight: 500; transition: color 0.3s, transform 0.3s; display: flex; align-items: center; gap: 8px; }
+        .social-links a i { font-size: 1.3rem; }
+        .social-links a:hover { color: var(--accent); transform: translateY(-3px); }
+        
+        .footer-bottom { border-top: 1px solid #333; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #666; font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; justify-content: center; padding-top: 100px; }
+            .hero h1 { font-size: 3.5rem; }
+            .hero-image { width: 100%; height: 400px; margin-top: 40px; }
+            .profile-card { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
+            .music-player { bottom: 20px; left: 50%; transform: translateX(-50%); width: max-content; }
+            .music-player:hover { transform: translateX(-50%) translateY(-3px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-container"></div>
+
+    <div id="loader">
+        <div class="loader-title">KRYSTY PLAYZ</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <nav id="navbar">
+        <div class="logo">KRYSTY PLAYZ</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#profile">Profile</a>
+            <a href="#booking">Book Match</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content reveal">
+            <span class="tagline">Welcome to the Club</span>
+            <h1>KRYSTY<br>PLAYZ</h1>
+<p>Premium Gaming Creator • Valorant Gameplay • Live Streams • Building an amazing community. Welcome to the official Krysty Playz experience.</p>
+
+            <div style="display: flex; gap: 15px;">
+                <a href="#booking" class="btn-primary"><i class="fas fa-gamepad"></i> Book Next Match</a>
+            </div>
+        </div>
+        
+        <div class="hero-image reveal" style="transition-delay: 0.2s;">
+            <img src="13434d05-053e-438c-9363-14a4b17cb31b.png" alt="Krysty Playz">
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-header reveal"><h2>About Me</h2></div>
+        <div class="about-card reveal">
+<p>Hey! I'm <strong>Krysty Playz</strong>, a passionate gaming content creator focused on delivering high-quality gameplay, entertaining live streams, and a welcoming community. Whether it's intense <strong>Valorant</strong> matches, exciting highlights, or just chilling with viewers, my goal is to create a premium experience where everyone feels at home. Thanks for being part of the journey—let's level up together!</p>
+        </div>
+    </section>
+
+    <section id="profile">
+        <div class="section-header reveal"><h2>The Setup</h2></div>
+        <div class="profile-card reveal">
+            <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 20px;">
+                <h3 style="font-size: 2rem; font-weight: 800;">VALORANT STATS</h3>
+            </div>
+            <div class="stat-box"><h4>Current Rank</h4><p>Bronze</p></div>
+            <div class="stat-box"><h4>Main Agents</h4><p>Sage & Skye</p></div>
+            <div class="stat-box"><h4>Region</h4><p>Mumbai</p></div>
+            <div class="stat-box"><h4>Sensitivity</h4><p>800 DPI | 0.3</p></div>
+        </div>
+    </section>
+
+    <section id="booking">
+        <div class="section-header reveal"><h2>Play With Krysty</h2></div>
+        <div class="booking-container reveal">
+            <form action="https://formspree.io/f/xbdnrrzq" method="POST">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label>Discord Username</label>
+                    <input type="text" name="discord" class="form-control" placeholder="username#1234" required>
+                </div>
+                <div class="form-group">
+                    <label>Riot ID</label>
+                    <input type="text" name="riot_id" class="form-control" placeholder="Player#TAG" required>
+                </div>
+                <div class="form-group">
+                    <label>Current Rank</label>
+                    <select name="rank" class="form-control">
+                        <option value="iron_bronze">Iron / Bronze</option>
+                        <option value="silver_gold">Silver / Gold</option>
+                        <option value="plat_dia">Platinum / Diamond</option>
+                        <option value="ascendant_up">Ascendant & Above</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px; font-size: 1.1rem;">Confirm Slot</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content reveal">
+            <div class="footer-logo">KRYSTY PLAYZ</div>
+            <p class="footer-desc">Creating premium gaming content, streaming epic moments, and dominating Valorant. Join the Krysty Playz .</p>
+            
+            <div class="social-links">
+                <a href="https://youtube.com/@krystyplays?si=YbP6-zUoD8_gYmAg" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="#" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+                <a href="https://www.instagram.com/krystyplays" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="mailto:your-email@example.com"><i class="fas fa-envelope"></i> Business</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 made by KRYSTY PLAYZ. All rights reserved.</p>
+            <p>Crafted with ❤️ for the KRYSTY Family</p>
+        </div>
+    </footer>
+
+    <div class="music-player reveal" style="transition-delay: 2s;">
+        <audio id="bg-music" loop>
+            <source src="1.mp3" type="audio/mpeg">
+        </audio>
+        
+        <button class="play-btn" id="play-btn"><i class="fas fa-play"></i></button>
+        <div class="volume-control">
+            <i class="fas fa-volume-down" style="font-size: 0.9rem;"></i>
+            <input type="range" id="vol-slider" min="0" max="1" step="0.01" value="0.3">
+            <i class="fas fa-volume-up" style="font-size: 0.9rem;"></i>
+        </div>
+    </div>
+
+    <script>
+        // 1. Interactive "Click to Enter" Loader Logic
+        window.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progress-bar');
+            const progressContainer = document.querySelector('.progress-container');
+            const loader = document.getElementById('loader');
+            const loaderTitle = document.querySelector('.loader-title');
+            
+            const music = document.getElementById('bg-music');
+            const playBtn = document.getElementById('play-btn');
+
+            // Start progress bar
+            setTimeout(() => { progressBar.style.width = '100%'; }, 100);
+
+            // Change to "Click to Enter" after bar finishes
+            setTimeout(() => { 
+                progressContainer.style.opacity = '0';
+                setTimeout(() => { progressContainer.style.display = 'none'; }, 500);
+                
+                loaderTitle.innerHTML = 'CLICK TO ENTER';
+                loaderTitle.classList.add('ready-to-enter');
+                
+                // Wait for user to tap the screen
+                loader.addEventListener('click', () => {
+                    // Play the song securely!
+                    music.play().then(() => {
+                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    }).catch(err => console.log("Audio play blocked", err));
+
+                    // Fade out loader
+                    loader.style.opacity = '0'; 
+                    setTimeout(() => { loader.style.display = 'none'; }, 800);
+                });
+            }, 2600);
+        });
+
+        // 2. Generate Floating Hearts
+        const heartsContainer = document.getElementById('hearts-container');
+        for(let i = 0; i < 20; i++) {
+            let heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = (8 + Math.random() * 6) + 's';
+            heart.style.fontSize = (0.8 + Math.random() * 1) + 'rem';
+            heartsContainer.appendChild(heart);
+        }
+
+        // 3. Navbar Shrink on Scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) { nav.style.padding = '15px 5%'; nav.style.background = 'rgba(255, 255, 255, 0.9)'; } 
+            else { nav.style.padding = '20px 5%'; nav.style.background = 'rgba(255, 255, 255, 0.7)'; }
+        });
+
+        // 4. Scroll Reveal Logic
+        const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); }
+            });
+        }, observerOptions);
+        reveals.forEach(reveal => { revealOnScroll.observe(reveal); });
+
+        // 5. Music Player Manual Controls
+        const musicElement = document.getElementById('bg-music');
+        const pBtn = document.getElementById('play-btn');
+        const volSlider = document.getElementById('vol-slider');
+
+        musicElement.volume = volSlider.value;
+
+        pBtn.addEventListener('click', () => {
+            if (musicElement.paused) {
+                musicElement.play();
+                pBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                musicElement.pause();
+                pBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        });
+
+        volSlider.addEventListener('input', (e) => { musicElement.volume = e.target.value; });
+    </script>
+</body>
+</html>
