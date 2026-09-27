@@ -454,9 +454,11 @@
         </div>
     </footer>
 
+    <!-- Updated Audio Setup -->
     <div class="music-player reveal" style="transition-delay: 2s;">
-        <audio id="bg-music" loop>
+        <audio id="bg-music" loop preload="auto">
             <source src="1.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
         </audio>
         
         <button class="play-btn" id="play-btn"><i class="fas fa-play"></i></button>
@@ -476,6 +478,10 @@
             
             const music = document.getElementById('bg-music');
             const playBtn = document.getElementById('play-btn');
+            const volSlider = document.getElementById('vol-slider');
+
+            // Set initial volume
+            music.volume = volSlider.value;
 
             setTimeout(() => { progressBar.style.width = '100%'; }, 100);
 
@@ -489,7 +495,9 @@
                 loader.addEventListener('click', () => {
                     music.play().then(() => {
                         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                    }).catch(err => console.log("Audio play blocked", err));
+                    }).catch(err => {
+                        console.log("Audio play blocked or file missing:", err);
+                    });
 
                     loader.style.opacity = '0'; 
                     setTimeout(() => { loader.style.display = 'none'; }, 800);
@@ -528,12 +536,14 @@
         const pBtn = document.getElementById('play-btn');
         const volSlider = document.getElementById('vol-slider');
 
-        musicElement.volume = volSlider.value;
-
         pBtn.addEventListener('click', () => {
             if (musicElement.paused) {
-                musicElement.play();
-                pBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                musicElement.play().then(() => {
+                    pBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(err => {
+                    console.log("Manual play error:", err);
+                    alert("Audio file (1.mp3) folder mein nahi mili ya play nahi ho rahi!");
+                });
             } else {
                 musicElement.pause();
                 pBtn.innerHTML = '<i class="fas fa-play"></i>';
