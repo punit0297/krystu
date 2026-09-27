@@ -42,7 +42,7 @@
         .reveal { opacity: 0; transform: translateY(40px) scale(0.95); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* Loader & Enter Screen (CSS Updates Only) */
+        /* Loader & Enter Screen */
         #loader {
             position: fixed; inset: 0; background: rgba(255, 255, 255, 0.95); z-index: 9999;
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -138,18 +138,17 @@
             100% { transform: translateY(0px); box-shadow: 0 20px 40px rgba(0,0,0,0.04); }
         }
         
-        /* Updated Hero Image wrapper for direct image embedding */
         .hero-image {
             width: 450px; height: 600px;
             border-radius: 30px; border: 4px solid white; 
-            overflow: hidden; /* Rounds the inner image edges */
+            overflow: hidden; 
             background: #f5f5f5;
             animation: heroFloat 6s ease-in-out infinite;
         }
         .hero-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Behave exactly like background cover */
+            object-fit: cover;
             display: block;
         }
 
@@ -177,13 +176,104 @@
         .stat-box h4 { color: #888; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .stat-box p { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
 
-        /* Booking Form */
-        .booking-container { max-width: 600px; margin: 0 auto; background: white; padding: 50px; border-radius: 30px; box-shadow: var(--shadow-subtle); border: 1px solid #f0f0f0; transition: transform 0.3s; }
-        .booking-container:hover { transform: translateY(-5px); }
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; color: #555; }
-        .form-control { width: 100%; padding: 16px 20px; border-radius: 15px; border: 1px solid #e5e5e5; background: #fafafa; font-family: 'Inter', sans-serif; font-size: 1rem; transition: all 0.3s; }
-        .form-control:focus { outline: none; border-color: var(--accent); background: white; box-shadow: 0 0 0 4px var(--accent-soft); }
+        /* Latest Uploads Section (4 Cards Grid) */
+        .uploads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .upload-card {
+            background: #1a1528;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .upload-card:hover { transform: translateY(-8px); }
+        .upload-thumb {
+            width: 100%;
+            height: 160px;
+            background: #2b233c;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .upload-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+        }
+        .play-overlay {
+            position: absolute;
+            background: #ff0000;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+        }
+        .upload-info {
+            padding: 18px;
+            background: rgba(20, 15, 30, 0.95);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+        .channel-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #ddd;
+        }
+        .channel-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: bold;
+        }
+        .upload-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #fff;
+        }
+        .watch-youtube-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 4px;
+        }
+        .watch-youtube-row a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+        }
+        .watch-youtube-row a:hover {
+            color: var(--accent);
+        }
 
         /* Premium Social Footer */
         footer { background: #111; color: white; padding: 80px 10% 30px; }
@@ -227,7 +317,7 @@
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#profile">Profile</a>
-            <a href="#booking">Book Match</a>
+            <a href="#uploads">Latest Uploads</a>
         </div>
     </nav>
 
@@ -235,10 +325,10 @@
         <div class="hero-content reveal">
             <span class="tagline">Welcome to the Club</span>
             <h1>KRYSTY<br>PLAYZ</h1>
-<p>Premium Gaming Creator • Valorant Gameplay • Live Streams • Building an amazing community. Welcome to the official Krysty Playz experience.</p>
+            <p>Premium Gaming Creator • Valorant Gameplay • Live Streams • Building an amazing community. Welcome to the official Krysty Playz experience.</p>
 
             <div style="display: flex; gap: 15px;">
-                <a href="#booking" class="btn-primary"><i class="fas fa-gamepad"></i> Book Next Match</a>
+                <a href="https://youtube.com/@krystyplays?si=qg9Q-mWUknocXIq1" target="_blank" class="btn-primary"><i class="fab fa-youtube"></i> Visit YouTube</a>
             </div>
         </div>
         
@@ -250,7 +340,7 @@
     <section id="about">
         <div class="section-header reveal"><h2>About Me</h2></div>
         <div class="about-card reveal">
-<p>Hey! I'm <strong>Krysty Playz</strong>, a passionate gaming content creator focused on delivering high-quality gameplay, entertaining live streams, and a welcoming community. Whether it's intense <strong>Valorant</strong> matches, exciting highlights, or just chilling with viewers, my goal is to create a premium experience where everyone feels at home. Thanks for being part of the journey—let's level up together!</p>
+            <p>Hey! I'm <strong>Krysty Playz</strong>, a passionate gaming content creator focused on delivering high-quality gameplay, entertaining live streams, and a welcoming community. Whether it's intense <strong>Valorant</strong> matches, exciting highlights, or just chilling with viewers, my goal is to create a premium experience where everyone feels at home. Thanks for being part of the journey—let's level up together!</p>
         </div>
     </section>
 
@@ -267,40 +357,88 @@
         </div>
     </section>
 
-    <section id="booking">
-        <div class="section-header reveal"><h2>Play With Krysty</h2></div>
-        <div class="booking-container reveal">
-            <form action="https://formspree.io/f/moeqobnp" method="POST">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+    <!-- Latest Uploads Section (4 Cards) -->
+    <section id="uploads">
+        <div class="section-header reveal"><h2 style="color: #fff;">LATEST UPLOADS</h2></div>
+        <div class="uploads-grid reveal">
+            <!-- Video Card 1 -->
+            <div class="upload-card">
+                <div class="upload-thumb">
+                    <div class="play-overlay"><i class="fab fa-youtube"></i></div>
                 </div>
-                <div class="form-group">
-                    <label>Discord Username</label>
-                    <input type="text" name="discord" class="form-control" placeholder="username#1234" required>
+                <div class="upload-info">
+                    <div class="channel-row">
+                        <div class="channel-avatar">KP</div>
+                        <span>Krysty Playz</span>
+                    </div>
+                    <div class="upload-title">Indian Street Food Roast 😂💀☕️</div>
+                    <div class="watch-youtube-row">
+                        <span>Watch on YouTube</span>
+                        <a href="https://youtu.be/YCxZys5vpFk" target="_blank"><i class="fas fa-play-circle"></i> Play</a>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Riot ID</label>
-                    <input type="text" name="riot_id" class="form-control" placeholder="Player#TAG" required>
+            </div>
+
+            <!-- Video Card 2 -->
+            <div class="upload-card">
+                <div class="upload-thumb">
+                    <div class="play-overlay"><i class="fab fa-youtube"></i></div>
                 </div>
-                <div class="form-group">
-                    <label>Current Rank</label>
-                    <select name="rank" class="form-control">
-                        <option value="iron_bronze">Iron / Bronze</option>
-                        <option value="silver_gold">Silver / Gold</option>
-                        <option value="plat_dia">Platinum / Diamond</option>
-                        <option value="ascendant_up">Ascendant & Above</option>
-                    </select>
+                <div class="upload-info">
+                    <div class="channel-row">
+                        <div class="channel-avatar">KP</div>
+                        <span>Krysty Playz</span>
+                    </div>
+                    <div class="upload-title">🔴I Found the Funniest teammates 😂 | VALORANT Funny moments India</div>
+                    <div class="watch-youtube-row">
+                        <span>Watch on YouTube</span>
+                        <a href="https://youtu.be/TXpj5jwh3TQ" target="_blank"><i class="fas fa-play-circle"></i> Play</a>
+                    </div>
                 </div>
-                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px; font-size: 1.1rem;">Confirm Slot</button>
-            </form>
+            </div>
+
+            <!-- Video Card 3 -->
+            <div class="upload-card">
+                <div class="upload-thumb">
+                    <div class="play-overlay"><i class="fab fa-youtube"></i></div>
+                </div>
+                <div class="upload-info">
+                    <div class="channel-row">
+                        <div class="channel-avatar">KP</div>
+                        <span>Krysty Playz</span>
+                    </div>
+                    <div class="upload-title">WHEN A GIRL GAMER PLAY😯 OUTLAST BEST MOMENTS INSPIRED BY BBS</div>
+                    <div class="watch-youtube-row">
+                        <span>Watch on YouTube</span>
+                        <a href="https://youtu.be/J4NrhG9fivw" target="_blank"><i class="fas fa-play-circle"></i> Play</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Card 4 -->
+            <div class="upload-card">
+                <div class="upload-thumb">
+                    <div class="play-overlay"><i class="fab fa-youtube"></i></div>
+                </div>
+                <div class="upload-info">
+                    <div class="channel-row">
+                        <div class="channel-avatar">KP</div>
+                        <span>Krysty Playz</span>
+                    </div>
+                    <div class="upload-title">Funny valorant moments 😂🤣calling me Aunty ......🫤</div>
+                    <div class="watch-youtube-row">
+                        <span>Watch on YouTube</span>
+                        <a href="https://youtu.be/Y2npI1CmuqY" target="_blank"><i class="fas fa-play-circle"></i> Play</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <footer>
         <div class="footer-content reveal">
             <div class="footer-logo">KRYSTY PLAYZ</div>
-            <p class="footer-desc">Creating premium gaming content, streaming epic moments, and dominating Valorant. Join the Krysty Playz .</p>
+            <p class="footer-desc">Creating premium gaming content, streaming epic moments, and dominating Valorant. Join the Krysty Playz community.</p>
             
             <div class="social-links">
                 <a href="https://youtube.com/@krystyplays?si=qg9Q-mWUknocXIq1" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
@@ -312,7 +450,7 @@
         
         <div class="footer-bottom">
             <p>&copy; 2026 made by KRYSTY PLAYZ. All rights reserved.</p>
-            <p>Crafted with ❤️ for the KRYSTY </p>
+            <p>Crafted with ❤️ for the KRYSTY community</p>
         </div>
     </footer>
 
@@ -330,7 +468,6 @@
     </div>
 
     <script>
-        // 1. Interactive "Click to Enter" Loader Logic
         window.addEventListener('DOMContentLoaded', () => {
             const progressBar = document.getElementById('progress-bar');
             const progressContainer = document.querySelector('.progress-container');
@@ -340,10 +477,8 @@
             const music = document.getElementById('bg-music');
             const playBtn = document.getElementById('play-btn');
 
-            // Start progress bar
             setTimeout(() => { progressBar.style.width = '100%'; }, 100);
 
-            // Change to "Click to Enter" after bar finishes
             setTimeout(() => { 
                 progressContainer.style.opacity = '0';
                 setTimeout(() => { progressContainer.style.display = 'none'; }, 500);
@@ -351,21 +486,17 @@
                 loaderTitle.innerHTML = 'CLICK TO ENTER';
                 loaderTitle.classList.add('ready-to-enter');
                 
-                // Wait for user to tap the screen
                 loader.addEventListener('click', () => {
-                    // Play the song securely!
                     music.play().then(() => {
                         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
                     }).catch(err => console.log("Audio play blocked", err));
 
-                    // Fade out loader
                     loader.style.opacity = '0'; 
                     setTimeout(() => { loader.style.display = 'none'; }, 800);
                 });
             }, 2600);
         });
 
-        // 2. Generate Floating Hearts
         const heartsContainer = document.getElementById('hearts-container');
         for(let i = 0; i < 20; i++) {
             let heart = document.createElement('div');
@@ -378,14 +509,12 @@
             heartsContainer.appendChild(heart);
         }
 
-        // 3. Navbar Shrink on Scroll
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if(window.scrollY > 50) { nav.style.padding = '15px 5%'; nav.style.background = 'rgba(255, 255, 255, 0.9)'; } 
             else { nav.style.padding = '20px 5%'; nav.style.background = 'rgba(255, 255, 255, 0.7)'; }
         });
 
-        // 4. Scroll Reveal Logic
         const reveals = document.querySelectorAll('.reveal');
         const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
         const revealOnScroll = new IntersectionObserver(function(entries, observer) {
@@ -395,7 +524,6 @@
         }, observerOptions);
         reveals.forEach(reveal => { revealOnScroll.observe(reveal); });
 
-        // 5. Music Player Manual Controls
         const musicElement = document.getElementById('bg-music');
         const pBtn = document.getElementById('play-btn');
         const volSlider = document.getElementById('vol-slider');
